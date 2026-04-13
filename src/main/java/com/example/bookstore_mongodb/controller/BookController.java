@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.RequestEntity;
 
 import java.util.List;
 
@@ -29,14 +28,14 @@ public class BookController {
     // DELETE /api/books/{id}: DELETE endpoint that deletes a book by its ID
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteBook(@PathVariable String id) {
-        // Call the service layer to delete the book (true: book ID exists and was deleted; false: book ID does not exist)
+        // Call the service layer to delete the book (true: book exists and was deleted; false: book does not exist)
         boolean book_is_deleted = bookService.deleteBook(id);
 
         if (book_is_deleted) {
-            // Book ID exists and was deleted successfully
+            // Book exists and was deleted successfully
             return ResponseEntity.ok("Book ID exists and was deleted successfully.");
         } else {
-            // Book ID does not exist
+            // Book does not exist
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Book ID does not exist.");
         }
     }
