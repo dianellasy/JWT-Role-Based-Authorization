@@ -32,6 +32,19 @@ public class SecurityConfig {
                         .requestMatchers(org.springframework.http.HttpMethod.DELETE, "/api/books/**").hasRole("ADMIN")   // Only ADMIN users can delete books
                         .anyRequest().authenticated()
                 )
+                .exceptionHandling(exceptionConfigurer -> exceptionConfigurer
+                        // Runs when the user is authenticated but does not have the required role for the endpoint
+                        .accessDeniedHandler((httpRequest, httpResponse, accessDeniedError) -> {
+                            // Set HTTP status code 403 Forbidden
+                            httpResponse.setStatus(403);
+
+                            // Tell the client we are returning JSON
+                            httpResponse.setContentType("application/json");
+
+                            // Write a JSON error message in the response body
+                            httpResponse.getWriter().write("{\"message\": \"Access Denied\"}");
+                        })
+                )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
