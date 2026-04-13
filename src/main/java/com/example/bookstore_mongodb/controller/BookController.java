@@ -31,12 +31,12 @@ public class BookController {
         // Call the service layer to delete the book (true: book exists and was deleted; false: book does not exist)
         boolean book_is_deleted = bookService.deleteBook(id);
 
-        if (book_is_deleted) {
+        if (book_is_deleted == true) {
             // Book exists and was deleted successfully
-            return ResponseEntity.ok("Book ID exists and was deleted successfully.");
+            return ResponseEntity.ok("Book exists and was deleted successfully.");
         } else {
             // Book does not exist
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Book ID does not exist.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Book does not exist.");
         }
     }
 }
